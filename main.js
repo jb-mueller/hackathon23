@@ -19,7 +19,7 @@ socket.onopen = () => {
     window.addEventListener("deviceorientation", event => {
         console.log(event.alpha)
         gyroOutput.innerText = event.alpha
-        //socket.send(JSON.stringify({ alpha: event.alpha }))
+        socket.send(JSON.stringify({gyro: { alpha: event.alpha, beta: event.beta}}))
     })
 }
 

@@ -5,10 +5,11 @@ const PORT = process.env.PORT || 8080
 
 const wss = new WebSocketServer({ port: PORT })
 
-const clients = {}
+const clients = new Set()
 let unity = null
 
 wss.on('connection', ws => {
+    let uuid = "unknown"
     ws.on('message', function message(msg) {
         console.log(`message received: ${msg}`)
         if (msg.toString() === "UNITY") {
@@ -16,27 +17,29 @@ wss.on('connection', ws => {
         } else {
             const msgJSON = JSON.parse(msg.toString())
             if (msgJSON.client) {
-                if (!Object.keys(clients).includes(msgJSON.client)) {
-                    const newUUID = uuidv4()
-                    console.log("new client connected, uuid: " + newUUID)
-                    clients[newUUID] = ws
-                    clients[newUUID].connected = true
-                    ws.send(JSON.stringify({ uuid: newUUID }))
-                    console.log("connected clients: " + Object.keys(clients).length)
-                } else {
-                    clients[msgJSON.client].connected = true
+                if (!clients.has(msgJSON.client)) {
+                    uuid = uuidv4()
+                    console.log("new client connected, uuid: " + uuid)
+                    clients.add(uuid)
+                    ws.send(JSON.stringify({ uuid }))
+                    console.log("connected clients: " + clients.size)
                 }
                 if (unity) {
                     // TODO: send uuid of new client to unity
+                }
+            } else if (msgJSON.gyro) {
+                if (unity) {
+                    // TODO: send gyro data to unity
                 }
             }
         }
     })
 
     ws.on('close', () => {
-        const closeUUID = Object.keys(clients).find(key => clients[key] === ws)
-        if (closeUUID) {
-            clients[closeUUID].connected = false
+        if (uuid !== "unknown") {
+            if (unity) {
+                // TODO: send to unity
+            }
         }
     })
 })
