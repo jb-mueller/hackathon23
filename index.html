@@ -1,8 +1,14 @@
-const gyroOutput = document.getElementById("gyro-output")
-const socket = new WebSocket("ws://192.168.94.248:8765")
-
-window.addEventListener("deviceorientation", event => {
-    console.log(event.alpha)
-    gyroOutput.innerText = event.alpha
-    socket.send(JSON.stringify({ alpha: event.alpha }))
-})
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Immersive Hackathon</title>
+</head>
+<body>
+    Immersive Hackathon
+    <div id="gyro-output">gyro</div>
+    <script src="./main.js"></script>
+</body>
+</html>
