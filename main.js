@@ -23,7 +23,7 @@ socket.onopen = () => {
     }
     window.addEventListener("deviceorientation", event => {
         console.log(event.alpha)
-        gyroOutput.innerText = `alpha: ${event.alpha}, beta: ${event.beta}, gamma: ${event.gamma}`
+        gyroOutput.innerText = `alpha: ${Math.round(event.alpha)}, beta: ${Math.round(event.beta)}, gamma: ${Math.round(event.gamma)}`
         gyro.alpha = event.alpha
         gyro.beta = event.beta
         gyro.gamma = event.gamma
