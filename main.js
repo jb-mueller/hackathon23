@@ -6,6 +6,8 @@ const gyro = {}
 let deltaXNorm = 0
 let deltaYNorm = 0
 
+let isRecording = false
+
 const cookies = {}
 const cookiesRaw = document.cookie.split("; ")
 cookiesRaw.forEach(cookie => {
@@ -52,19 +54,24 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         audio: true
     }).then(stream => {
         const mediaRecorder = new MediaRecorder(stream)
-        document.getElementById('record').addEventListener('click', () => {
+        recordBtn.addEventListener("touchstart", () => {
             mediaRecorder.start()
             console.log(mediaRecorder.state)
             console.log("start media recording")
+            recordBtn.style.boxShadow = "0 0 5rem red inset"
+            isRecording = true
         })
         let chunks = []
         mediaRecorder.ondataavailable = e => {
             chunks.push(e.data)
         }
-        document.getElementById('stop').addEventListener('click', () => {
-            mediaRecorder.stop()
-            console.log(mediaRecorder.state)
-            console.log("recorder stopped")
+        document.body.addEventListener('touchend', () => {
+            if (isRecording) {
+                mediaRecorder.stop()
+                console.log(mediaRecorder.state)
+                console.log("recorder stopped")
+                recordBtn.style.boxShadow = "0 0 5rem blue inset"
+            }
         })
         mediaRecorder.onstop = e => {
             console.log("recorder stopped")
@@ -113,6 +120,10 @@ document.addEventListener("touchend", () => {
     dpadKnob.style.left = "0"
     dpadKnob.style.top = "0"
     console.log("bar")
+    dpadKnob.style.transition = "all 0.2s ease-in-out"
+    setTimeout(() => {
+        dpadKnob.style.transition = "none"
+    }, 200);
 })
 
 document.addEventListener("touchmove", event => {
