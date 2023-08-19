@@ -109,7 +109,9 @@ document.addEventListener("touchend", () => {
 })
 
 document.addEventListener("touchmove", event => {
+    event.preventDefault()
     if (mouseIsDown) {
+        event.preventDefault()
         const deltaX = event.touches[0].screenX - dragStartPosition.x
         const deltaY = event.touches[0].screenY - dragStartPosition.y
         dpadKnob.style.left = deltaX + "px"
