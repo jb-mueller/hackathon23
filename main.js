@@ -2,6 +2,8 @@ const gyroOutput = document.getElementById("gyro-output")
 const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
 const gyro = {}
+let deltaXNorm = 0
+let deltaYNorm = 0
 
 const cookies = {}
 const cookiesRaw = document.cookie.split("; ")
@@ -37,7 +39,7 @@ socket.onmessage = msg => {
 }
 
 setInterval(() => {
-    socket.send(JSON.stringify({uuid: cookies.uuid, gyro }))
+    socket.send(JSON.stringify({ uuid: cookies.uuid, alpha: deltaXNorm, beta: deltaYNorm }))
 }, 100);
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -74,7 +76,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             clipContainer.appendChild(clipLabel)
             document.body.appendChild(clipContainer)
 
-            const blob = new Blob(chunks, {type: "audio/ogg; codecs=opus"})
+            const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" })
             chunks = []
             const audioURL = window.URL.createObjectURL(blob)
             audio.src = audioURL
@@ -85,3 +87,35 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 } else {
     console.log("getUserMedia not supported on your browser")
 }
+
+const dpad = document.getElementById('dpad')
+const dpadKnob = document.getElementById('dpad-knob')
+
+let mouseIsDown = false
+let dragStartPosition = { x: 0, y: 0 }
+
+dpadKnob.addEventListener("touchstart", event => {
+    mouseIsDown = true
+    dragStartPosition.x = event.touches[0].screenX
+    dragStartPosition.y = event.touches[0].screenY
+    console.log("foo")
+})
+
+document.addEventListener("touchend", () => {
+    mouseIsDown = false
+    dpadKnob.style.left = "0"
+    dpadKnob.style.top = "0"
+    console.log("bar")
+})
+
+document.addEventListener("touchmove", event => {
+    if (mouseIsDown) {
+        const deltaX = event.touches[0].screenX - dragStartPosition.x
+        const deltaY = event.touches[0].screenY - dragStartPosition.y
+        dpadKnob.style.left = deltaX + "px"
+        dpadKnob.style.top = deltaY + "px"
+        console.log("baz")
+        deltaXNorm = deltaX / dpad.offsetWidth
+        deltaYNorm = deltaY / dpad.offsetHeight
+    }
+})
