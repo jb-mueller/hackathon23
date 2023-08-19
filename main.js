@@ -1,5 +1,5 @@
 const gyroOutput = document.getElementById("gyro-output")
-const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
+const socket = new WebSocket("ws://localhost:8080")//("wss://hackathon-backend-l22i.onrender.com/")
 
 
 const gyro = {}
@@ -87,10 +87,15 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             clipContainer.appendChild(clipLabel)
             document.body.appendChild(clipContainer)
 
-            const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" })
+            const blob = new Blob(chunks, { type: "audio/wav" })
+            const fileReader = new FileReader()
+            fileReader.onload = function (event) {
+                console.log("onload")
+                const base64Data = event.target.result.split(',')[1]
+                socket.send(JSON.stringify({uuid: cookies.uuid, audio: base64Data}))
+            }
+            fileReader.readAsDataURL(blob)
             chunks = []
-            const audioURL = window.URL.createObjectURL(blob)
-            audio.src = audioURL
         }
     }).catch(err => {
         console.error(`the following getUserMedia error occured: ${err}`)

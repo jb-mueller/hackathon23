@@ -40,6 +40,14 @@ wss.on('connection', ws => {
                         gamma: msgJSON.gyro.gamma,
                     }))
                 }
+            } else if (msgJSON.audio) {
+                if (unity) {
+                    unity.send(JSON.stringify({
+                        type: "audio",
+                        uuid: msgJSON.uuid,
+                        audio: msgJSON.audio
+                    }))
+                }
             }
         }
     })
