@@ -15,6 +15,7 @@ socket.onopen = () => {
     console.log("connection established")
     if (cookies.uuid) {
         socket.send(JSON.stringify({ client: cookies.uuid }))
+        document.getElementById("uuid-output").innerText = cookies.uuid
     } else {
         socket.send(JSON.stringify({ client: "new" }))
     }
@@ -31,6 +32,7 @@ socket.onmessage = msg => {
     const msgJSON = JSON.parse(msg.data)
     if (msgJSON.uuid) {
         document.cookie = "uuid=" + msgJSON.uuid
+        document.getElementById("uuid-output").innerText = cookies.uuid
     }
 }
 
