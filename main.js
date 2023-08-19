@@ -1,6 +1,8 @@
 const gyroOutput = document.getElementById("gyro-output")
 const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
+const gyro = {}
+
 const cookies = {}
 const cookiesRaw = document.cookie.split("; ")
 cookiesRaw.forEach(cookie => {
@@ -19,7 +21,9 @@ socket.onopen = () => {
     window.addEventListener("deviceorientation", event => {
         console.log(event.alpha)
         gyroOutput.innerText = `alpha: ${event.alpha}, beta: ${event.beta}, gamma: ${event.gamma}`
-        socket.send(JSON.stringify({ gyro: { alpha: event.alpha, beta: event.beta, gamma: event.gamma } }))
+        gyro.alpha = event.alpha
+        gyro.beta = event.beta
+        gyro.gamma = event.gamma
     })
 }
 
@@ -29,3 +33,7 @@ socket.onmessage = msg => {
         document.cookie = "uuid=" + msgJSON.uuid
     }
 }
+
+setInterval(() => {
+    socket.send(JSON.stringify({ gyro }))
+}, 100);

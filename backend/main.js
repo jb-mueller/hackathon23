@@ -10,7 +10,6 @@ let unity = null
 
 wss.on('connection', ws => {
     let uuid = "unknown"
-    console.log("unknown uuid")
     ws.on('message', function message(msg) {
         console.log(`message received: ${msg}`)
         if (msg.toString() === "UNITY") {
