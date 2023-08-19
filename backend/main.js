@@ -1,5 +1,5 @@
 import { WebSocketServer } from 'ws'
-import {v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 const PORT = process.env.PORT || 8080
 
@@ -10,6 +10,7 @@ let unity = null
 
 wss.on('connection', ws => {
     let uuid = "unknown"
+    console.log("unknown uuid")
     ws.on('message', function message(msg) {
         console.log(`message received: ${msg}`)
         if (msg.toString() === "UNITY") {
@@ -25,11 +26,20 @@ wss.on('connection', ws => {
                     console.log("connected clients: " + clients.size)
                 }
                 if (unity) {
-                    // TODO: send uuid of new client to unity
+                    unity.send(JSON.stringify({
+                        type: "connect",
+                        uuid: uuid
+                    }))
                 }
             } else if (msgJSON.gyro) {
                 if (unity) {
-                    // TODO: send gyro data to unity
+                    unity.send(JSON.stringify({
+                        type: "gyro",
+                        uuid: uuid,
+                        alpha: msgJSON.gyro.alpha,
+                        beta: msgJSON.gyro.beta,
+                        gamma: msgJSON.gyro.gamma,
+                    }))
                 }
             }
         }
@@ -38,7 +48,10 @@ wss.on('connection', ws => {
     ws.on('close', () => {
         if (uuid !== "unknown") {
             if (unity) {
-                // TODO: send to unity
+                unity.send(JSON.stringify({
+                    type: "disconnect",
+                    uuid: uuid
+                }))
             }
         }
     })
