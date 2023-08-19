@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Immersive Hackathon</title>
 </head>
+
 <body>
-    Immersive Hackathon
-    <div id="gyro-output">gyro</div>
-    <div id="uuid-output">gyro</div>
-    <div id="record">Record</div>
-    <div id="stop">Stop</div>
-    <div id="dpad">
-        <div id="dpad-knob"></div>
+    <!--<div id="uuid-output">gyro</div>-->
+    <div id="container">
+        <div class="btn" id="start-btn">start</div>
+        <div id="controls-container">
+            <div class="btn" id="record-btn">record</div>
+            <div id="dpad">
+                <div id="dpad-knob"></div>
+            </div>
+        </div>
     </div>
     <script src="./main.js"></script>
 </body>
+
 </html>

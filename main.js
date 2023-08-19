@@ -1,6 +1,7 @@
 const gyroOutput = document.getElementById("gyro-output")
 const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
+
 const gyro = {}
 let deltaXNorm = 0
 let deltaYNorm = 0
@@ -90,6 +91,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 const dpad = document.getElementById('dpad')
 const dpadKnob = document.getElementById('dpad-knob')
+const recordBtn = document.getElementById('record-btn')
+const container = document.getElementById('container')
+const controlsContainer = document.getElementById('controls-container')
 
 let mouseIsDown = false
 let dragStartPosition = { x: 0, y: 0 }
@@ -109,9 +113,7 @@ document.addEventListener("touchend", () => {
 })
 
 document.addEventListener("touchmove", event => {
-    event.preventDefault()
     if (mouseIsDown) {
-        event.preventDefault()
         const deltaX = event.touches[0].screenX - dragStartPosition.x
         const deltaY = event.touches[0].screenY - dragStartPosition.y
         dpadKnob.style.left = deltaX + "px"
@@ -120,4 +122,17 @@ document.addEventListener("touchmove", event => {
         deltaXNorm = deltaX / dpad.offsetWidth
         deltaYNorm = deltaY / dpad.offsetHeight
     }
+})
+
+
+const startBtn = document.getElementById("start-btn")
+
+startBtn.addEventListener("touchstart", () => {
+    document.body.requestFullscreen()
+    setTimeout(() => {
+        if (document.fullscreenElement) {
+            startBtn.style.display = "none"
+            controlsContainer.style.display = "flex"
+        }
+    }, 500);
 })

@@ -1,3 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    overscroll-behavior: none;
+    margin: none;
+    padding: none;
+    background-color: black;
+    color: white;
+}
+
 #record {
     width: 5rem;
     height: 5rem;
@@ -11,19 +25,51 @@
 }
 
 #dpad {
-    width: 10rem;
-    height: 10rem;
-    background-color: aqua;
+    width: 50vw;
+    height: 50vw;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 25vw;
+    border: 1px white solid;
+    box-shadow: 0 0 25vw inset #555577;
 }
 
 #dpad-knob {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 1.5rem;
-    background-color: brown;
+    width: 15vw;
+    height: 15vw;
+    border-radius: 7.5vw;
+    background-color: #aaa;
     position: relative;
+    box-shadow: 0 0 7.5vw black inset;
+}
+
+.btn {
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px white solid;
+    border-radius: 5rem;
+    box-shadow: 0 0 5rem blue inset;
+    font-size: 3rem;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#controls-container {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 70vh;
 }
