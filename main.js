@@ -1,5 +1,5 @@
 const gyroOutput = document.getElementById("gyro-output")
-const socket = new WebSocket("ws://localhost:8080")//("wss://hackathon-backend-l22i.onrender.com/")
+const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
 
 const gyro = {}
@@ -20,24 +20,16 @@ socket.onopen = () => {
     console.log("connection established")
     if (cookies.uuid) {
         socket.send(JSON.stringify({ client: cookies.uuid }))
-        document.getElementById("uuid-output").innerText = cookies.uuid
     } else {
         socket.send(JSON.stringify({ client: "new" }))
     }
-    window.addEventListener("deviceorientation", event => {
-        console.log(event.alpha)
-        //gyroOutput.innerText = `alpha: ${Math.round(event.alpha)}, beta: ${Math.round(event.beta)}, gamma: ${Math.round(event.gamma)}`
-        gyro.alpha = event.alpha
-        gyro.beta = event.beta
-        gyro.gamma = event.gamma
-    })
 }
 
 socket.onmessage = msg => {
     const msgJSON = JSON.parse(msg.data)
     if (msgJSON.uuid) {
         document.cookie = "uuid=" + msgJSON.uuid
-        document.getElementById("uuid-output").innerText = cookies.uuid
+        cookies.uuid = msgJSON.uuid
     }
 }
 

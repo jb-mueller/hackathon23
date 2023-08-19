@@ -71,7 +71,12 @@ body {
 #controls-container {
     display: none;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    height: 70vh;
+    height: 100%;
+    gap: 2.5rem;
+}
+
+#spaceship {
+    height: 30%;
 }
