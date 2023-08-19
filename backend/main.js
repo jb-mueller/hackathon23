@@ -34,7 +34,7 @@ wss.on('connection', ws => {
                 if (unity) {
                     unity.send(JSON.stringify({
                         type: "gyro",
-                        uuid: uuid,
+                        uuid: msgJSON.uuid,
                         alpha: msgJSON.gyro.alpha,
                         beta: msgJSON.gyro.beta,
                         gamma: msgJSON.gyro.gamma,

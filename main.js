@@ -37,7 +37,7 @@ socket.onmessage = msg => {
 }
 
 setInterval(() => {
-    socket.send(JSON.stringify({ gyro }))
+    socket.send(JSON.stringify({uuid: cookies.uuid, gyro }))
 }, 100);
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
