@@ -40,7 +40,10 @@ socket.onmessage = msg => {
 }
 
 setInterval(() => {
-    socket.send(JSON.stringify({ uuid: cookies.uuid, alpha: deltaXNorm, beta: deltaYNorm }))
+    if (mouseIsDown) {
+        socket.send(JSON.stringify({ uuid: cookies.uuid, gyro: { alpha: deltaXNorm, beta: deltaYNorm } }))
+        console.log("sending " + deltaXNorm + " " + deltaYNorm)
+    }
 }, 100);
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

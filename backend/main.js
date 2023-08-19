@@ -32,7 +32,6 @@ wss.on('connection', ws => {
                 }
             } else if (msgJSON.gyro) {
                 if (unity) {
-                    console.log("sending gyro data")
                     unity.send(JSON.stringify({
                         type: "gyro",
                         uuid: msgJSON.uuid,
