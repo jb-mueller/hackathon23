@@ -1,3 +1,4 @@
+
 const gyroOutput = document.getElementById("gyro-output")
 const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
