@@ -9,7 +9,7 @@ const clients = new Set()
 let unity = null
 
 wss.on('connection', ws => {
-    let uuid = "unknown"
+    let uuid = "1eknown"
     ws.on('message', function message(msg) {
         console.log(`message received: ${msg}`)
         if (msg.toString() === "UNITY") {

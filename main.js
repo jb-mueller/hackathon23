@@ -1,6 +1,7 @@
 const gyroOutput = document.getElementById("gyro-output")
 const socket = new WebSocket("wss://hackathon-backend-l22i.onrender.com/")
 
+const spaceship = document.getElementById("spaceship")
 
 const gyro = {}
 let deltaXNorm = 0
@@ -16,10 +17,16 @@ cookiesRaw.forEach(cookie => {
 })
 console.log(cookies)
 
+function setSpaceshipColor(uuid) {
+    const hue = Number("0x" + uuid.substring(0, 2)) * 360 / 255
+    spaceship.style.color = `hsl(${hue}, 80%, 50%)`
+}
+
 socket.onopen = () => {
     console.log("connection established")
     if (cookies.uuid) {
         socket.send(JSON.stringify({ client: cookies.uuid }))
+        setSpaceshipColor(cookies.uuid)
     } else {
         socket.send(JSON.stringify({ client: "new" }))
     }
@@ -30,6 +37,7 @@ socket.onmessage = msg => {
     if (msgJSON.uuid) {
         document.cookie = "uuid=" + msgJSON.uuid
         cookies.uuid = msgJSON.uuid
+        setSpaceshipColor(msgJSON.uuid)
     }
 }
 
@@ -73,7 +81,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             fileReader.onload = function (event) {
                 console.log("onload")
                 const base64Data = event.target.result.split(',')[1]
-                socket.send(JSON.stringify({uuid: cookies.uuid, audio: base64Data}))
+                socket.send(JSON.stringify({ uuid: cookies.uuid, audio: base64Data }))
             }
             fileReader.readAsDataURL(blob)
             chunks = []
