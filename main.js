@@ -76,17 +76,6 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         mediaRecorder.onstop = e => {
             console.log("recorder stopped")
 
-            const clipName = prompt("Enter a name for your sound clip")
-            const clipContainer = document.createElement("article")
-            const clipLabel = document.createElement("p")
-            const audio = document.createElement("audio")
-
-            audio.setAttribute("controls", "")
-            clipLabel.innerHTML = clipName
-            clipContainer.appendChild(audio)
-            clipContainer.appendChild(clipLabel)
-            document.body.appendChild(clipContainer)
-
             const blob = new Blob(chunks, { type: "audio/wav" })
             const fileReader = new FileReader()
             fileReader.onload = function (event) {
@@ -117,14 +106,12 @@ dpadKnob.addEventListener("touchstart", event => {
     mouseIsDown = true
     dragStartPosition.x = event.touches[0].screenX
     dragStartPosition.y = event.touches[0].screenY
-    console.log("foo")
 })
 
 document.addEventListener("touchend", () => {
     mouseIsDown = false
     dpadKnob.style.left = "0"
     dpadKnob.style.top = "0"
-    console.log("bar")
     dpadKnob.style.transition = "all 0.2s ease-in-out"
     setTimeout(() => {
         dpadKnob.style.transition = "none"
@@ -137,7 +124,6 @@ document.addEventListener("touchmove", event => {
         const deltaY = event.touches[0].screenY - dragStartPosition.y
         dpadKnob.style.left = deltaX + "px"
         dpadKnob.style.top = deltaY + "px"
-        console.log("baz")
         deltaXNorm = deltaX / dpad.offsetWidth
         deltaYNorm = deltaY / dpad.offsetHeight
     }
